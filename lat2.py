@@ -1,43 +1,75 @@
-nama_bulan = [
-    "", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-]
+"""
+Program: Hitung Tiket Masuk Kebun Binatang
+Deskripsi:
+    Program ini menghitung total biaya tiket masuk berdasarkan umur pengunjung.
+    - Umur ≤ 2 tahun      → Gratis
+    - Umur 3–12 tahun     → $14
+    - Umur ≥ 65 tahun     → $18
+    - Umur lainnya        → $23
 
-while True:
-    try:
-        tahun = int(input("Masukkan tahun (contoh: 2024): "))
-        bulan = int(input("Masukkan bulan (1-12): "))
+    Program berjalan berulang hingga pengguna menekan Enter tanpa input umur.
+    Setelah itu, pengguna diminta memasukkan jumlah uang,
+    dan program menghitung kembalian.
+Author  : [Nama Anda]
+Version : 1.0
+"""
 
-        if bulan < 1 or bulan > 12:
-            print("Input tidak valid. Harap masukkan angka bulan antara 1 dan 12.\n")
+def hitung_harga(umur: int) -> float:
+    """
+    Mengembalikan harga tiket berdasarkan umur.
+    """
+    if umur <= 2:
+        return 0.0
+    elif 3 <= umur <= 12:
+        return 14.0
+    elif umur >= 65:
+        return 18.0
+    else:
+        return 23.0
+
+
+def main() -> None:
+    """
+    Fungsi utama program.
+    """
+    print("=" * 50)
+    print("     PROGRAM HITUNG TIKET MASUK KEBUN BINATANG")
+    print("=" * 50)
+
+    total = 0.0
+
+    while True:
+        umur_input = input("masukkan umur: ").strip()
+        if umur_input == "":
+            break
+
+        try:
+            umur = int(umur_input)
+        except ValueError:
+            print("Input tidak valid! Harap masukkan angka.")
             continue
 
+        harga = hitung_harga(umur)
+
+        if harga == 0:
+            print("Gratis")
+        else:
+            print(f"Harga ${harga:.2f}")
+
+        total += harga
+        print(f"Running total: {total:.2f}\n")
+
+    if total == 0:
+        print("Tidak ada tiket yang dibeli.")
+        return
+
+    try:
+        uang = float(input("masukkan jumlah uang: "))
+        kembalian = uang - total
+        print(f"Running kembalian: {kembalian:.2f}")
     except ValueError:
-        print("Input tidak valid. Harap masukkan angka numerik untuk tahun dan bulan.\n")
-        continue
+        print("Input uang tidak valid!")
 
-    jumlah_hari = 0
-    while True:
-        if bulan in [1, 3, 5, 7, 8, 10, 12]:
-            jumlah_hari = 31
-            break
 
-        if bulan in [4, 6, 9, 11]:
-            jumlah_hari = 30
-            break
-
-        if bulan == 2:
-            if (tahun % 400 == 0) or (tahun % 4 == 0 and tahun % 100 != 0):
-                jumlah_hari = 29
-            else:
-                jumlah_hari = 28
-            break
-
-    print(f"-> Jumlah hari di bulan {nama_bulan[bulan]} tahun {tahun} adalah {jumlah_hari} hari.")
-    print("-" * 30)
-
-    ulangi = input("Apakah Anda ingin mengecek bulan lain? (y/n): ")
-    if ulangi.lower() != 'y':
-        print("Terima kasih telah menggunakan program ini.")
-        break
-    print()
+if __name__ == "__main__":
+    main()
